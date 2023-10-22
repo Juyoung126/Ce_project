@@ -13,9 +13,9 @@ if (['error', 'warn', 'info', 'debug'].includes(newLogLevel)) {
 }
 
 // 로그 레벨을 설정하는 함수
-function setLogLevel(level) {
+function setLogLevel(newlevel) {
   winston.configure({
-    level: level
+    level: newlevel
   });
-  console.log(`로깅 레벨이 ${level}로 변경되었습니다.`);
+  console.log(`로깅 레벨이 ${newlevel}로 변경되었습니다.`);
 }

@@ -17,7 +17,7 @@ const logFormat = winston.format.combine(
 
 // 파일 로그 설정
 const fileTransport = new winston.transports.File({
-  filename: '/home/t23201/logs/.log',
+  filename: '/home/t23201/svr/v0.5/src/logs/server.log',
   maxsize: 5242880, // 파일 크기 제한 (5MB)
   maxFiles: 5, // 순환 파일의 최대 개수
   tailable: true, // 순환 파일 활성화
@@ -43,6 +43,7 @@ fileTransport.on('rotate', (oldFilename, newFilename) => {
 // 예외 처리
 process.on('uncaughtException', (err) => {
   logger.error('예외 발생:', err);
+  process.exit(1); // 프로세스를 종료
 });
 
 // 예외 처리 완료 후 프로세스 종료
@@ -95,8 +96,17 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Express 앱을 포트에 연결
+
 const port = 60001;
-app.listen(port, () => {
+
+const server = app.listen(port, () => {
   logger.info(`서버가 ${port} 포트에서 실행 중입니다.`);
+});
+
+// 서버 종료 로직
+process.on('SIGINT', () => {
+  logger.info('서버가 종료됩니다.');
+  server.close(() => {
+    process.exit(0); // 프로세스를 정상 종료
+  });
 });

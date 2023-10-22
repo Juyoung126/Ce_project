@@ -1,0 +1,15 @@
+[Unit]
+Description= server monitoring service that runs everytime a server is connected
+
+[Service]
+ExecStart=/usr/bin/node /home/t23201/svr/v0.5/src/nodejs/resource_monitoring.js
+ExecStart=/usr/bin/node /home/t23201/svr/v0.5/src/nodejs/monitoring_db.js
+WorkingDirectory=/home/t23201/svr/v0.5/src/nodejs
+Restart=always
+User=t23201
+Environment=NODE_ENV=production
+Environment=PORT=60001
+
+[Install]
+WantedBy=multi-user.target
+
